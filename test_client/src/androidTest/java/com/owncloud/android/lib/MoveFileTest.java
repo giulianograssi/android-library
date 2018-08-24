@@ -211,7 +211,7 @@ public class MoveFileTest extends RemoteTest {
     /**
      * Test move folder
      */
-    public void testMoveRemoteFileOperation() {
+    public void testMoveRemoteFolder() {
         Log.v(LOG_TAG, "testMoveFolder in");
 
         /// successful cases
