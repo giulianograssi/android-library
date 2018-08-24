@@ -22,7 +22,7 @@
    THE SOFTWARE.
 
  -->
- 
+
 <resources>
     <string name="server_base_url">http://server</string>
     <string name="server_base_url_2">http://server2</string>
