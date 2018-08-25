@@ -51,21 +51,44 @@ We are all about quality while not sacrificing speed so we use a very pragmatic 
 * to assure the quality of the app, any PR gets reviewed, approved and tested by [two developers](https://github.com/nextcloud/android-library/blob/master/MAINTAINERS) before it will be merged to master
 
 ## Run Tests
-The integration tests will emulate a client application by starting the TestActivity which uses the android-library to interact with the Nextcloud API.
-* To run the tests in Android Studio, create a Emulator matching the targetSdkVersion
-* The following Environment variables should be set to modify the static resources in setup.xml
+The integration tests will emulate a client application by starting a TestActivity which uses the android-library to interact with the Nextcloud Server API.
+* To run the tests in Android Studio, create a Emulator matching the targetSdkVersion (or use a real device)
+* The following environment variables can be set to modify the static resources in setup.xml used by the tests without changing the file
 
         - OCTEST_SERVER_BASE_URL
         - OCTEST_SERVER_BASE_URL_2
         - OCTEST_USERNAME
         - OCTEST_PASSWORD
-* When running both nextcloud instances locally, use as host address 10.0.2.2 which is a special alias to your host loopback interface within the emulator
-* If you want to run 2 instances over docker, do the following
-        $ docker run -dit --name nextcloud1 -p 8081:80 nextcloud
-        $ docker exec --user www-data nextcloud1 php occ config:system:set trusted_domains 2 --value=10.0.2.2:8081
 
-        $ docker run -dit --name nextcloud2 --net=isolated_nw -p 8082:80 nextcloud
+* When running both Nextcloud instances locally, use as server host 10.0.2.2 which is a special alias to your host loopback interface within the emulator
+* If you want to run 2 instances over docker, do the following
+
+1. Start docker instances
+
+        $ docker run -dit --name nextcloud1 -p 8081:80 nextcloud
+        $ docker run -dit --name nextcloud2 -p 8082:80 nextcloud
+
+2. Access both instances on the port you specified in your browser, the setup screen will appear and you can set a username/password and start the server initialisation
+
+        For Windows:
+        $ start localhost:8081
+        $ start localhost:8081
+
+        For Mac/OSX:
+        $ open localhost:8081
+        $ open localhost:8081
+
+        For Linux/Unix:
+        $ xdg-open localhost:8081
+        $ xdg-open localhost:8081
+
+
+3. The Android Emulator Device will use a loopback interface which will route back to your localhost, therefore we need to set the loopback interface as trusted_domain
+
+        $ docker exec --user www-data nextcloud1 php occ config:system:set trusted_domains 2 --value=10.0.2.2:8081
         $ docker exec --user www-data nextcloud2 php occ config:system:set trusted_domains 2 --value=10.0.2.2:8082
+
+4. Run the androidTest/java/com/owncloud/android/lib
 
 ##  License
 
